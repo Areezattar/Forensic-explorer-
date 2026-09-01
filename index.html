@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forensic Species Explorer</title>
+<meta name="description" content="An educational species database focused on animals, insects, forensic entomology and wildlife forensics.">
+<style>
+:root{
+  --bg:#07111f;--panel:#0d1b2d;--panel2:#10243a;--text:#eaf2f8;--muted:#9eb1c4;
+  --accent:#5eead4;--accent2:#60a5fa;--danger:#fb7185;--border:#20364d;
+}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(180deg,#06101c,#0a1523 55%,#07111f);color:var(--text)}
+a{color:inherit}.nav{position:sticky;top:0;z-index:10;background:rgba(7,17,31,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.navin{max-width:1200px;margin:auto;padding:15px 20px;display:flex;align-items:center;justify-content:space-between;gap:15px}.brand{font-weight:800;letter-spacing:.3px}.brand span{color:var(--accent)}
+.navlinks{display:flex;gap:15px;flex-wrap:wrap}.navlinks a{text-decoration:none;color:var(--muted);font-size:14px}.navlinks a:hover{color:var(--text)}
+.hero{max-width:1200px;margin:auto;padding:70px 20px 35px;display:grid;grid-template-columns:1.4fr .8fr;gap:30px;align-items:center}
+.eyebrow{color:var(--accent);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px}
+h1{font-size:clamp(40px,6vw,72px);line-height:.98;margin:12px 0 18px}.hero p{color:var(--muted);font-size:18px;line-height:1.65;max-width:720px}
+.hero-card{background:linear-gradient(145deg,var(--panel2),var(--panel));border:1px solid var(--border);border-radius:24px;padding:26px;box-shadow:0 20px 60px #0005}
+.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat{padding:18px;border:1px solid var(--border);border-radius:16px;background:#091728}.stat b{font-size:27px;display:block}.stat small{color:var(--muted)}
+.section{max-width:1200px;margin:auto;padding:30px 20px 65px}.section h2{font-size:34px;margin:0 0 10px}.lead{color:var(--muted);line-height:1.65}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0}.search{flex:1;min-width:230px;background:#091728;border:1px solid var(--border);color:var(--text);padding:13px 15px;border-radius:12px;outline:none}.filter{background:#091728;border:1px solid var(--border);color:var(--text);padding:12px;border-radius:12px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:linear-gradient(160deg,#0e2034,#0a1727);border:1px solid var(--border);border-radius:18px;padding:20px;transition:.2s}.card:hover{transform:translateY(-3px);border-color:#355977}.emoji{font-size:38px}.tag{display:inline-block;padding:5px 8px;border-radius:99px;background:#123047;color:#9feee4;font-size:11px;font-weight:700;margin:4px 4px 4px 0}.card h3{margin:12px 0 4px;font-size:21px}.latin{font-style:italic;color:var(--muted);font-size:13px}.card p{color:#bdcad7;line-height:1.55;font-size:14px}.links{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.btn{display:inline-block;text-decoration:none;border:1px solid #2a4863;border-radius:10px;padding:8px 10px;font-size:12px;color:#dceaf5}.btn:hover{border-color:var(--accent);color:var(--accent)}
+.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:20px}.stage{padding:18px;border:1px solid var(--border);border-radius:14px;background:#0b1b2c}.stage b{display:block;margin-bottom:7px}.stage p{color:var(--muted);font-size:13px;line-height:1.5;margin:0}
+.callout{border:1px solid #31506a;background:#0b1d30;border-radius:18px;padding:22px;margin-top:22px}.callout strong{color:var(--accent)}
+footer{border-top:1px solid var(--border);color:var(--muted);padding:28px 20px;text-align:center;font-size:13px}
+
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:30}
+.modal.open{display:flex}.modalbox{width:min(760px,100%);max-height:90vh;overflow:auto;background:#0b1a2b;border:1px solid #31506a;border-radius:22px;padding:26px;box-shadow:0 30px 90px #0009;position:relative}
+.close{position:absolute;right:16px;top:12px;background:#13283b;border:1px solid #31506a;color:#fff;border-radius:10px;padding:8px 11px;cursor:pointer;font-size:18px}
+.detailhead{display:flex;gap:18px;align-items:center;padding-right:45px}.detailemoji{font-size:62px}.detailhead h2{margin:0 0 5px;font-size:32px}.detailgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0}.detailitem{background:#091728;border:1px solid #20364d;border-radius:13px;padding:14px}.detailitem small{display:block;color:#7f95aa;text-transform:uppercase;font-size:10px;font-weight:800;margin-bottom:5px}.detailitem span{color:#dce7f0;line-height:1.45}.card{cursor:pointer}.card .btn{cursor:pointer}
+.hidden{display:none}@media(max-width:850px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.timeline{grid-template-columns:1fr 1fr}}@media(max-width:560px){.grid{grid-template-columns:1fr}.timeline{grid-template-columns:1fr}.navin{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="navin">
+  <div class="brand">Forensic <span>Species Explorer</span></div>
+  <div class="navlinks"><a href="#species">Species</a><a href="#forensics">Forensics</a><a href="#sources">Sources</a></div>
+</div></nav>
+
+<header class="hero">
+  <div>
+    <div class="eyebrow">Animal • Insect • Wildlife Forensics</div>
+    <h1>Where species science meets forensic investigation.</h1>
+    <p>Explore animals and arthropods that matter to forensic science, from blow flies used in post-mortem investigations to beetles, snakes, cats and wildlife evidence.</p>
+  </div>
+  <div class="hero-card">
+    <div class="statgrid">
+      <div class="stat"><b id="speciesCount">0</b><small>species profiles</small></div>
+      <div class="stat"><b>6</b><small>major categories</small></div>
+      <div class="stat"><b>PMI</b><small>key forensic topic</small></div>
+      <div class="stat"><b>DNA</b><small>species identification</small></div>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="forensics">
+<h2>Forensic Entomology</h2>
+<p class="lead">Forensic entomology applies insect and arthropod biology to legal investigations. Blow flies and other flies can colonize remains early, while beetles and other arthropods may become more prominent later. Development and succession can contribute to minimum post-mortem interval estimates, but interpretation depends on environmental and case-specific factors.</p>
+<div class="timeline">
+  <div class="stage"><b>01 • Fresh</b><p>Early post-mortem period; insect activity may begin quickly when remains are accessible.</p></div>
+  <div class="stage"><b>02 • Bloat</b><p>Microbial and physical changes progress; insect colonization develops.</p></div>
+  <div class="stage"><b>03 • Active decay</b><p>High insect activity; larvae can be important for development-based estimates.</p></div>
+  <div class="stage"><b>04 • Advanced decay</b><p>Different arthropod communities become increasingly relevant.</p></div>
+  <div class="stage"><b>05 • Dry remains</b><p>Beetles and other taxa may provide succession and ecological evidence.</p></div>
+</div>
+<div class="callout"><strong>Important:</strong> This site is an educational reference, not a tool for independently determining time of death or other forensic conclusions.</div>
+</section>
+
+<section class="section" id="species">
+<h2>Species Database</h2>
+<p class="lead">Search by common name, scientific name, category or forensic role. Every profile includes direct external information links.</p>
+<div class="controls">
+  <input id="search" class="search" placeholder="Search species, family, forensic role..." aria-label="Search species">
+  <select id="category" class="filter" aria-label="Filter category">
+    <option value="all">All categories</option><option value="forensic insects">Forensic insects</option>
+    <option value="cats">Cats</option><option value="snakes">Snakes</option><option value="birds">Birds</option><option value="mammals">Mammals</option>
+  </select>
+</div>
+<div id="grid" class="grid"></div>
+</section>
+
+<section class="section" id="sources">
+<h2>Research & More Information</h2>
+<p class="lead">Use these sources for deeper study and verification. Conservation status should be checked against the current IUCN assessment rather than treated as permanent.</p>
+<div class="grid">
+  <div class="card"><div class="emoji">🔬</div><h3>PubMed</h3><p>Search peer-reviewed biomedical and forensic literature.</p><div class="links"><a class="btn" href="https://pubmed.ncbi.nlm.nih.gov/?term=forensic+entomology" target="_blank">Open PubMed</a></div></div>
+  <div class="card"><div class="emoji">🌿</div><h3>IUCN Red List</h3><p>Conservation assessments and species information.</p><div class="links"><a class="btn" href="https://www.iucnredlist.org/" target="_blank">Open IUCN</a></div></div>
+  <div class="card"><div class="emoji">🏛️</div><h3>Natural History Museum</h3><p>Accessible background on forensic entomology and insect biology.</p><div class="links"><a class="btn" href="https://www.nhm.ac.uk/discover/murder-maggots-forensic-entomology.html" target="_blank">Read article</a></div></div>
+</div>
+</section>
+
+
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" onclick="if(event.target===this)closeModal()">
+ <div class="modalbox">
+  <button class="close" onclick="closeModal()" aria-label="Close">×</button>
+  <div class="detailhead"><div id="modalEmoji" class="detailemoji">🐾</div><div><h2 id="modalTitle">Species</h2><div id="modalScientific" class="latin"></div></div></div>
+  <p id="modalRole" class="lead"></p>
+  <div id="modalGrid" class="detailgrid"></div>
+  <div class="links">
+   <a id="modalWiki" class="btn" target="_blank">Wikipedia ↗</a>
+   <a id="modalResearch" class="btn" target="_blank">Research ↗</a>
+   <a id="modalIucn" class="btn" target="_blank">IUCN search ↗</a>
+  </div>
+ </div>
+</div>
+<footer>Forensic Species Explorer • Educational project • Verify scientific and conservation information with current authoritative sources.</footer>
+
+<script>
+
+const detailInfo = {
+ "Bluebottle Blow Fly": ["Order Diptera","Family Calliphoridae","Forensic role","Development and colonization evidence; useful in forensic entomology research.","Life cycle","Egg → larva → pupa → adult","Evidence","Larvae, pupae and adult insects recovered from remains."],
+ "Green Bottle Fly": ["Order Diptera","Family Calliphoridae","Forensic role","Carrion colonization and larval development can contribute to forensic entomology studies.","Life cycle","Egg → larva → pupa → adult","Evidence","Larvae and developmental stages."],
+ "Common Flesh Fly": ["Order Diptera","Family Sarcophagidae","Forensic role","Larval development and succession may contribute to minimum-PMI research.","Life cycle","Larva-bearing female → larva → pupa → adult","Evidence","Larvae and adults."],
+ "House Fly": ["Order Diptera","Family Muscidae","Forensic role","May occur around decomposing remains and contribute to insect succession evidence.","Life cycle","Egg → larva → pupa → adult","Evidence","Adults and immature stages."],
+ "Dermestid Beetle": ["Order Coleoptera","Family Dermestidae","Forensic role","Associated with later decomposition and dry remains; useful in succession studies.","Life cycle","Egg → larva → pupa → adult","Evidence","Larvae and adult beetles."],
+ "American Carrion Beetle": ["Order Coleoptera","Family Silphidae","Forensic role","Carrion-associated beetle useful for studying arthropod succession.","Life cycle","Egg → larva → pupa → adult","Evidence","Adults and larvae."],
+ "Hister Beetle": ["Order Coleoptera","Family Histeridae","Forensic role","Predatory beetles may be associated with carrion and other insects.","Life cycle","Egg → larva → pupa → adult","Evidence","Adults and larvae."],
+ "Phorid Fly": ["Order Diptera","Family Phoridae","Forensic role","Small flies can be relevant in concealed or difficult-to-access remains.","Life cycle","Egg → larva → pupa → adult","Evidence","Adults and immature stages."],
+ "Ant": ["Order Hymenoptera","Family Formicidae","Forensic role","Can alter remains and insect evidence; may contribute to scene interpretation.","Life cycle","Egg → larva → pupa → adult","Evidence","Adults and brood."],
+ "Common Moth": ["Order Lepidoptera","Family Tineidae","Forensic role","Moths and other late-arriving arthropods can contribute to succession evidence.","Life cycle","Egg → larva → pupa → adult","Evidence","Larvae and adults."],
+ "Lion": ["Class Mammalia","Family Felidae","Forensic role","Wildlife forensics can use hair, tissue, bones, teeth and DNA for identification.","Key evidence","Hair, tissue, bone, teeth and DNA","Research focus","Species identification and wildlife crime."],
+ "Tiger": ["Class Mammalia","Family Felidae","Forensic role","Biological evidence can support species identification in wildlife investigations.","Key evidence","Hair, tissue, bone, teeth and DNA","Research focus","Wildlife crime and species identification."],
+ "Leopard": ["Class Mammalia","Family Felidae","Forensic role","Hair, bones, teeth and DNA can assist wildlife species identification.","Key evidence","Hair, bones, teeth, tissue and DNA","Research focus","Wildlife evidence."],
+ "Snow Leopard": ["Class Mammalia","Family Felidae","Forensic role","Wildlife forensic methods can support identification and anti-trafficking work.","Key evidence","Hair, tissue, bone and DNA","Research focus","Species identification."],
+ "Jaguar": ["Class Mammalia","Family Felidae","Forensic role","Species identification from biological evidence is relevant to wildlife crime investigations.","Key evidence","Hair, tissue, bone and DNA","Research focus","Wildlife evidence."],
+ "Domestic Cat": ["Class Mammalia","Family Felidae","Forensic role","Hair, tissue and DNA may provide biological evidence in forensic investigations.","Key evidence","Hair, saliva, tissue and DNA","Research focus","Individual/species biological evidence."],
+ "King Cobra": ["Class Reptilia","Family Elapidae","Forensic role","Morphology, scales, shed skin and DNA can support species identification.","Key evidence","Scales, shed skin, tissue and DNA","Research focus","Species identification and wildlife evidence."],
+ "Indian Cobra": ["Class Reptilia","Family Elapidae","Forensic role","Snake identification may involve morphology, scales, shed skin and DNA.","Key evidence","Scales, shed skin and DNA","Research focus","Species identification."],
+ "Common Krait": ["Class Reptilia","Family Elapidae","Forensic role","Species identification is important in wildlife and medical contexts.","Key evidence","Morphology, scales and DNA","Research focus","Species identification."],
+ "Russell's Viper": ["Class Reptilia","Family Viperidae","Forensic role","Identification may involve morphology and biological evidence; venom is medically significant.","Key evidence","Scales, tissue and DNA","Research focus","Species identification."],
+ "Indian Python": ["Class Reptilia","Family Pythonidae","Forensic role","Wildlife evidence may include scales, shed skin, tissue and DNA.","Key evidence","Scales, shed skin and DNA","Research focus","Wildlife species identification."],
+ "Green Anaconda": ["Class Reptilia","Family Boidae","Forensic role","Biological evidence can assist species identification.","Key evidence","Scales, tissue and DNA","Research focus","Species identification."],
+ "Bald Eagle": ["Class Aves","Family Accipitridae","Forensic role","Feathers, bones, talons and DNA can support wildlife forensic identification.","Key evidence","Feathers, bones, talons and DNA","Research focus","Wildlife identification."],
+ "House Sparrow": ["Class Aves","Family Passeridae","Forensic role","Feathers and DNA can be used in species identification research.","Key evidence","Feathers, tissue and DNA","Research focus","Species identification."],
+ "Domestic Dog": ["Class Mammalia","Family Canidae","Forensic role","Hair, saliva, tissue and DNA may provide biological evidence.","Key evidence","Hair, saliva, tissue and DNA","Research focus","Biological evidence."],
+ "Asian Elephant": ["Class Mammalia","Family Elephantidae","Forensic role","Ivory, tissue and DNA can be relevant to wildlife forensic investigations.","Key evidence","Ivory, tissue and DNA","Research focus","Wildlife crime and species identification."],
+ "Indian Rhinoceros": ["Class Mammalia","Family Rhinocerotidae","Forensic role","Horn and biological material can be examined in wildlife crime investigations.","Key evidence","Horn, tissue and DNA","Research focus","Wildlife crime."]
+};
+
+const species = [
+ {n:"Bluebottle Blow Fly",s:"Calliphora vicina",c:"forensic insects",e:"🪰",r:"Early carrion colonizer; development can support minimum PMI research.",q:"Calliphora vicina"},
+ {n:"Green Bottle Fly",s:"Lucilia sericata",c:"forensic insects",e:"🪰",r:"Important blow fly used in forensic entomology and developmental studies.",q:"Lucilia sericata"},
+ {n:"Common Flesh Fly",s:"Sarcophaga carnaria",c:"forensic insects",e:"🪰",r:"Flesh fly; larval development and succession can be relevant to PMI research.",q:"Sarcophaga carnaria"},
+ {n:"House Fly",s:"Musca domestica",c:"forensic insects",e:"🪰",r:"A muscid that can occur on decomposing remains, especially as decomposition progresses.",q:"Musca domestica"},
+ {n:"Dermestid Beetle",s:"Dermestes spp.",c:"forensic insects",e:"🪲",r:"Skin beetles can be associated with later decomposition and dry remains.",q:"Dermestes forensic entomology"},
+ {n:"American Carrion Beetle",s:"Necrophila americana",c:"forensic insects",e:"🪲",r:"Carrion-associated beetle useful for studying insect succession.",q:"Necrophila americana"},
+ {n:"Hister Beetle",s:"Histeridae",c:"forensic insects",e:"🪲",r:"Predatory beetles may be associated with carrion and other insects.",q:"Histeridae forensic entomology"},
+ {n:"Phorid Fly",s:"Phoridae",c:"forensic insects",e:"🪰",r:"Small flies that can be relevant in concealed or difficult-to-access remains.",q:"Phoridae forensic entomology"},
+ {n:"Ant",s:"Formicidae",c:"forensic insects",e:"🐜",r:"May alter remains or insect evidence and can be relevant to scene interpretation.",q:"ants forensic entomology"},
+ {n:"Common Moth",s:"Tineidae",c:"forensic insects",e:"🦋",r:"Moths and other late-arriving arthropods can contribute to succession evidence.",q:"Tineidae forensic entomology"},
+ {n:"Lion",s:"Panthera leo",c:"cats",e:"🦁",r:"Wildlife forensics: species identification, DNA, hair, bones and trafficking investigations.",q:"Panthera leo"},
+ {n:"Tiger",s:"Panthera tigris",c:"cats",e:"🐅",r:"Wildlife forensic evidence can include hair, tissue, bones, teeth and DNA.",q:"Panthera tigris"},
+ {n:"Leopard",s:"Panthera pardus",c:"cats",e:"🐆",r:"Hair, bones, teeth and DNA can assist wildlife species identification.",q:"Panthera pardus"},
+ {n:"Snow Leopard",s:"Panthera uncia",c:"cats",e:"🐆",r:"Wildlife forensics can support identification and anti-trafficking work.",q:"Panthera uncia"},
+ {n:"Jaguar",s:"Panthera onca",c:"cats",e:"🐆",r:"Species identification from biological evidence is relevant to wildlife crime investigations.",q:"Panthera onca"},
+ {n:"Domestic Cat",s:"Felis catus",c:"cats",e:"🐈",r:"Hair, tissue and DNA may be used as biological evidence in forensic investigations.",q:"Felis catus"},
+ {n:"King Cobra",s:"Ophiophagus hannah",c:"snakes",e:"🐍",r:"Scale, skin and DNA evidence can support species identification; venom is medically significant.",q:"Ophiophagus hannah"},
+ {n:"Indian Cobra",s:"Naja naja",c:"snakes",e:"🐍",r:"Snake identification may involve morphology, scales, shed skin and DNA.",q:"Naja naja"},
+ {n:"Common Krait",s:"Bungarus caeruleus",c:"snakes",e:"🐍",r:"Venomous snake of South Asia; species identification is important in wildlife and medical contexts.",q:"Bungarus caeruleus"},
+ {n:"Russell's Viper",s:"Daboia russelii",c:"snakes",e:"🐍",r:"Important South Asian viper; forensic relevance includes species identification and venom evidence.",q:"Daboia russelii"},
+ {n:"Indian Python",s:"Python molurus",c:"snakes",e:"🐍",r:"Wildlife evidence may include scales, shed skin, tissue and DNA.",q:"Python molurus"},
+ {n:"Green Anaconda",s:"Eunectes murinus",c:"snakes",e:"🐍",r:"Large snake; biological evidence can assist species identification.",q:"Eunectes murinus"},
+ {n:"Bald Eagle",s:"Haliaeetus leucocephalus",c:"birds",e:"🦅",r:"Feathers, bones, talons and DNA can support wildlife forensic identification.",q:"Haliaeetus leucocephalus"},
+ {n:"House Sparrow",s:"Passer domesticus",c:"birds",e:"🐦",r:"Feathers and DNA can be used in species identification research.",q:"Passer domesticus"},
+ {n:"Domestic Dog",s:"Canis lupus familiaris",c:"mammals",e:"🐕",r:"Hair, saliva, tissue and DNA may provide biological evidence.",q:"Canis lupus familiaris"},
+ {n:"Asian Elephant",s:"Elephas maximus",c:"mammals",e:"🐘",r:"Ivory, tissue and DNA can be relevant to wildlife forensic investigations.",q:"Elephas maximus"},
+ {n:"Indian Rhinoceros",s:"Rhinoceros unicornis",c:"mammals",e:"🦏",r:"Horn and biological material can be examined in wildlife crime investigations.",q:"Rhinoceros unicornis"}
+];
+
+const grid=document.getElementById("grid"), search=document.getElementById("search"), category=document.getElementById("category");
+document.getElementById("speciesCount").textContent=species.length;
+function wiki(q){return "https://en.wikipedia.org/wiki/Special:Search?search="+encodeURIComponent(q)}
+function render(){
+ const term=search.value.toLowerCase(), cat=category.value;
+ const rows=species.filter(x=>(cat==="all"||x.c===cat)&&[x.n,x.s,x.c,x.r].join(" ").toLowerCase().includes(term));
+ grid.innerHTML=rows.length?rows.map((x,i)=>`
+ <article class="card" data-index="${species.indexOf(x)}" onclick="openSpecies(${species.indexOf(x)})">
+ <div class="emoji">${x.e}</div>
+ <span class="tag">${x.c}</span><h3>${x.n}</h3><div class="latin">${x.s}</div>
+ <p>${x.r}</p><div class="links">
+ <a class="btn" href="${wiki(x.q)}" target="_blank" onclick="event.stopPropagation()">Wikipedia ↗</a>
+ <a class="btn" href="https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(x.q+" forensic")}" target="_blank" onclick="event.stopPropagation()">Research ↗</a>
+ <a class="btn" href="https://www.google.com/search?q=${encodeURIComponent(x.n+" IUCN Red List")}" target="_blank" onclick="event.stopPropagation()">IUCN search ↗</a>
+ </div></article>`).join(""):`<div class="card"><h3>No species found</h3><p>Try another search or category.</p></div>`;
+}
+function openSpecies(index){
+ const x=species[index], d=detailInfo[x.n] || ["Classification","—","Forensic role",x.r,"Key evidence","Morphology and biological material","Research focus","Species identification"];
+ document.getElementById("modalTitle").textContent=x.n;
+ document.getElementById("modalScientific").textContent=x.s;
+ document.getElementById("modalEmoji").textContent=x.e;
+ document.getElementById("modalRole").textContent=x.r;
+ document.getElementById("modalGrid").innerHTML=`
+   <div class="detailitem"><small>${d[0]}</small><span>${d[1]}</span></div>
+   <div class="detailitem"><small>${d[2]}</small><span>${d[3]}</span></div>
+   <div class="detailitem"><small>${d[4]}</small><span>${d[5]}</span></div>
+   <div class="detailitem"><small>${d[6]}</small><span>${d[7]}</span></div>`;
+ document.getElementById("modalWiki").href=wiki(x.q);
+ document.getElementById("modalResearch").href="https://pubmed.ncbi.nlm.nih.gov/?term="+encodeURIComponent(x.q+" forensic");
+ document.getElementById("modalIucn").href="https://www.google.com/search?q="+encodeURIComponent(x.n+" IUCN Red List");
+ document.getElementById("modal").classList.add("open");
+ document.body.style.overflow="hidden";
+}
+function closeModal(){document.getElementById("modal").classList.remove("open");document.body.style.overflow=""}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+search.addEventListener("input",render); category.addEventListener("change",render); render();
+</script>
+</body>
+</html>
